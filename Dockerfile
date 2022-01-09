@@ -6,17 +6,20 @@
 # TO_BUILD:       docker build --rm -t zeitgeist/docker-bcompare .
 # SOURCE:         https://github.com/alexzeitgeist/docker-bcompare
 
-# Pull base image.
-FROM debian:jessie
+# Pull base image
+FROM ubuntu:20.04
 MAINTAINER Alexander Turcic "alex@zeitgeist.se"
 
+# ENV http_proxy=http://192.168.31.198:7070
+# ENV https_proxy=https://192.168.31.198:7070
 ENV BCOMPARE_URL https://www.scootersoftware.com/bcompare-4.4.1.26165_amd64.deb
 
 # Install dependencies.
 RUN \
-  apt-get update && \
+  apt-get update -y && \
   apt-get install -y wget && \
-  apt-get install fonts-inconsolata && \
+  apt-get install -y libglib2.0-0 && \
+  apt-get install -y fonts-inconsolata && \
   wget "${BCOMPARE_URL}" -O bcompare.deb && \
   apt-get purge -y --auto-remove wget && \
   { dpkg -i bcompare.deb || true; } && \
